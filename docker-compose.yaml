@@ -3,6 +3,7 @@ services:
   linuxgsm-mc-volume:
     image: ghcr.io/gameservermanagers/gameserver:mc
     container_name: mcserver
+    privileged: false
     restart: unless-stopped
     volumes:
       - linuxgsm-mc:/data
