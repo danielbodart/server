@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  linuxgsm-mc-volume:
+    image: ghcr.io/gameservermanagers/gameserver:mc
+    container_name: mcserver
+    restart: unless-stopped
+    volumes:
+      - linuxgsm-mc:/data
+    network_mode: host
+
+volumes:
+  linuxgsm-mc:
