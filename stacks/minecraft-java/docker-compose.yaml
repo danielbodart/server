@@ -1,0 +1,15 @@
+version: '3.8'
+
+volumes:
+  minecraft_java_data:
+
+services:
+
+  minecraft_java:
+    image: 'gameservermanagers/gameserver:mc'
+    container_name: mcserver
+    volumes:
+      - 'minecraft_java_data:/data'
+    ports:
+      - '25565:25565'
+    restart: unless-stopped

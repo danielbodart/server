@@ -1,9 +1,7 @@
-version: '2.4'
+version: '3.8'
 
 volumes:
   portainer_data:
-  minecraft_java_data:
-  minecraft_bedrock_data:
 
 services:
 
@@ -16,23 +14,4 @@ services:
     ports:
       - '8000:8000/tcp'
       - '9443:9443/tcp'
-    restart: unless-stopped
-
-  minecraft_java:
-    image: 'gameservermanagers/gameserver:mc'
-    container_name: mcserver
-    volumes:
-      - 'minecraft_java_data:/data'
-    ports:
-      - '25565:25565/tcp'
-      - '25565:25565/udp'
-    restart: unless-stopped
-
-  minecraft_bedrock:
-    image: 'gameservermanagers/gameserver:mcb'
-    container_name: mcbserver
-    volumes:
-      - 'minecraft_bedrock_data:/data'
-    ports:
-      - '19132:19132/udp'
     restart: unless-stopped

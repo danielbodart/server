@@ -1,0 +1,16 @@
+version: '3.8'
+
+volumes:
+  minecraft_bedrock_data:
+
+services:
+
+  minecraft_bedrock:
+    image: 'gameservermanagers/gameserver:mcb'
+#    build: .
+    container_name: mcbserver
+    volumes:
+      - 'minecraft_bedrock_data:/data'
+    ports:
+      - '19132:19132/udp'
+    restart: unless-stopped
