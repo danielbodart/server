@@ -2,7 +2,6 @@
 ssh_authorized_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCwr2ouBRNc5Uv9qa4bJw/TwK2I9Z8+v2HCc7QifBEVsmQPpA8wBj3PSmNA+cq50i6uh4636EJZxOrBuN6wI2c6/fKWwJCOPBszdF4MQ8/2ohKV4vCIJE1P/ZWGvcgWOqqQGL++MYlPn5zllruahAtNRf4pSS35w/TVnjPc0w1OAL+VEAlE0UYN+zDkd0QPrjdZTKkni8uWiNHR5wZ0gn1v8RTixX7VUEn1dAJZcV4P/2crMB3K5WOBWbxDCJHP9vUhpmR3S8DKQ8uOw8+ecLhZTIBs6ITvPeby2tdJYJcOtKEEofBOd6YXApOlmg2vAtJd4/3ijdi5rs5zYjAE0fJsWY/fC2LwxEXIQjA5utuifod4qeNuwhDcJ4aTxg0zKHioSw9ZUH6z50cpKrTc4/ynBCl5UmQFoXu6JY/aZMi6XfkqUMk4/NXU6a+l5MJLnZHWwrwOBwc4crx3FJczD9Jtbta8eiAbXubgum8S9zml1wqisnVxSaOvX3OBKLYbMCc= dan@desktop
 
-
 write_files:
   - path: /etc/environment
     content: |
@@ -10,3 +9,17 @@ write_files:
     append: true
 
 hostname: new-server
+
+rancher:
+  services:
+    portainer:
+      image: 'portainer/portainer-ce:latest'
+      container_name: portainer
+      volumes:
+        - '/var/run/docker.sock:/var/run/docker.sock'
+        - '/var/run/system-engine.sock:/var/run/system-engine.sock'
+        - '/var/lib/portainer:/data'
+      ports:
+        - '8000:8000/tcp'
+        - '9443:9443/tcp'
+      restart: always

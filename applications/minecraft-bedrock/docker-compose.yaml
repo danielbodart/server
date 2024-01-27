@@ -7,7 +7,6 @@ services:
 
   minecraft_bedrock:
     image: 'gameservermanagers/gameserver:mcb'
-#    build: .
     container_name: mcbserver
     volumes:
       - 'minecraft_bedrock_data:/data'
