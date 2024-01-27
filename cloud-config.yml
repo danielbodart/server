@@ -23,3 +23,5 @@ rancher:
         - '8000:8000/tcp'
         - '9443:9443/tcp'
       restart: always
+      labels:
+        - io.rancher.os.scope=system
