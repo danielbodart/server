@@ -3,3 +3,5 @@
 sudo mkdir -p /dev/sr0
 # Install BurmillaOS
 sudo ros install -c "https://raw.githubusercontent.com/danielbodart/server/master/cloud-config.yml"  -d /dev/nvme0n1 -f
+
+sudo reboot now
