@@ -1,0 +1,18 @@
+version: '3.8'
+
+volumes:
+  plex:
+    name: plex
+
+services:
+  plex:
+    container_name: plex
+    image: plexinc/pms-docker
+    restart: unless-stopped
+    environment:
+      - TZ="Europe/London"
+    network_mode: host
+    volumes:
+      - plex/config:/config
+      - plex/transcode:/transcode
+      - plex/data:/data
