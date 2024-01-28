@@ -7,6 +7,8 @@ function setup() {
     docker context create "${name}" --docker "host=ssh://rancher@server.bodar.com:222"
     docker context use "${name}"
   fi
+
+  cp .ssh/config ~/.ssh/config
 }
 
 function run-all() {
