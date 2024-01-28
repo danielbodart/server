@@ -1,0 +1,18 @@
+version: '3.8'
+
+volumes:
+  portainer_data:
+
+services:
+
+  portainer_service:
+    image: 'portainer/portainer-ce:latest'
+    container_name: portainer
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '/var/run/system-engine.sock:/var/run/system-engine.sock'
+      - 'portainer_data:/data'
+    ports:
+      - '8000:8000/tcp'
+      - '9443:9443/tcp'
+    restart: unless-stopped

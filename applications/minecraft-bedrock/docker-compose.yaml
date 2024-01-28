@@ -5,6 +5,13 @@ volumes:
 
 services:
 
+  minecraft_bedrock_fix:
+    image: alpine
+    volumes:
+      - 'minecraft_bedrock_data:/data'
+      - .:/tmp
+    command: sh -c "mkdir -p /data/config-lgsm/mcbserver/ && cp -v /tmp/common.cfg /data/config-lgsm/mcbserver/"
+
   minecraft_bedrock:
     image: 'gameservermanagers/gameserver:mcb'
     container_name: mcbserver
@@ -13,3 +20,6 @@ services:
     ports:
       - '19132:19132/udp'
     restart: unless-stopped
+
+
+

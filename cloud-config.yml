@@ -10,18 +10,3 @@ write_files:
 
 hostname: new-server
 
-rancher:
-  services:
-    portainer:
-      image: 'portainer/portainer-ce:latest'
-      container_name: portainer
-      volumes:
-        - '/var/run/docker.sock:/var/run/docker.sock'
-        - '/var/run/system-engine.sock:/var/run/system-engine.sock'
-        - '/var/lib/portainer:/data'
-      ports:
-        - '8000:8000/tcp'
-        - '9443:9443/tcp'
-      restart: always
-#      labels:
-#        - io.rancher.os.scope=system

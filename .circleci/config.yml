@@ -1,0 +1,12 @@
+version: 2.1
+jobs:
+  build:
+    branches:
+      only: master
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: build
+          command: ./run update
