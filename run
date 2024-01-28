@@ -5,8 +5,18 @@ function setup() {
   docker context use server-bodar-com
 }
 
-function ci() {
+function run-all() {
+  for run in applications/*/run
+  do (
+    cd "$(dirname "$run")"
+    ./run
+  )
+  done
+}
 
+function ci() {
+  setup
+  run-all
 }
 
 command="${1-ci}"

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+docker compose up -d
+docker cp data/* minecraft_bedrock:/data/

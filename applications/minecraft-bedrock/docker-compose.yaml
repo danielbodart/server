@@ -1,25 +1,16 @@
 version: '3.8'
 
 volumes:
-  minecraft_bedrock_data:
+  minecraft_bedrock:
+    name: minecraft_bedrock
 
 services:
 
-  minecraft_bedrock_fix:
-    image: alpine
-    volumes:
-      - 'minecraft_bedrock_data:/data'
-      - .:/tmp
-    command: sh -c "mkdir -p /data/config-lgsm/mcbserver/ && cp -v /tmp/common.cfg /data/config-lgsm/mcbserver/"
-
   minecraft_bedrock:
     image: 'gameservermanagers/gameserver:mcb'
-    container_name: mcbserver
+    container_name: minecraft_bedrock
     volumes:
-      - 'minecraft_bedrock_data:/data'
+      - 'minecraft_bedrock:/data'
     ports:
       - '19132:19132/udp'
     restart: unless-stopped
-
-
-
