@@ -22,7 +22,6 @@ function run-all() {
 
 function update() {
   setup
-  docker pull
   run-all
 }
 
