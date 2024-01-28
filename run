@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
 function setup() {
-  docker context create server-bodar-com --docker "host=ssh://rancher@server.bodar.com:222"
-  docker context use server-bodar-com
+  local name="server-bodar-com"
+
+  if ! docker context inspect "${name}" &> /dev/null; then
+    docker context create "${name}" --docker "host=ssh://rancher@server.bodar.com:222"
+    docker context use "${name}"
+  fi
 }
 
 function run-all() {
