@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+BASE_URL="https://raw.githubusercontent.com/danielbodart/server/master"
+
+function run() {
+  # Create fake CDROM for BurmillaOS to install
+  sudo mkdir -p /dev/sr0
+  # Install BurmillaOS
+  sudo ros install -c "${BASE_URL}/cloud-config.yml"  -d /dev/nvme0n1 -f
+
+  sudo reboot now
+}
+
+function create() {
+  mkdir -p /tmp/burmilla
+  pushd /tmp/burmilla
+  if [ ! -f "burmillaos.iso" ]; then
+    curl "https://github.com/burmilla/os/releases/download/v2.0.0-rc2/burmillaos-v2.0.0-rc2.iso" -L -o burmillaos.iso
+  fi
+
+  rm -rf burmillaos-patched.iso global.*
+  xorriso -osirrox on -indev burmillaos.iso -extract /boot/global.cfg global.original
+  tr -d '\n' < global.original > global.cfg
+  echo "rancher.cloud_init.datasources=['url:${BASE_URL}/installer']" >> global.cfg
+  xorriso -indev burmillaos.iso -outdev burmillaos-patched.iso -map global.cfg /boot/global.cfg -boot_image any replay
+
+  popd
+}
+
+
+command="${1-run}"
+set +e; shift; set -Eeo pipefail;
+$command "$@"

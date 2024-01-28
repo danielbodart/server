@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# Create fake CDROM for BurmillaOS to install
-sudo mkdir -p /dev/sr0
-# Install BurmillaOS
-sudo ros install -c "https://raw.githubusercontent.com/danielbodart/server/master/cloud-config.yml"  -d /dev/nvme0n1 -f
-
-sudo reboot now
