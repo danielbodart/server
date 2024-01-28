@@ -18,11 +18,11 @@ function run-all() {
   done
 }
 
-function ci() {
+function update() {
   setup
   run-all
 }
 
-command="${1-ci}"
+command="${1-update}"
 set +e; shift; set -Eeo pipefail;
 $command "$@"
