@@ -9,4 +9,13 @@ write_files:
       TZ="Europe/London"
     append: true
 
+  - path: /etc/rc.local
+    permissions: "0755"
+    owner: root
+    content: |
+      #!/bin/bash
+      wait-for-docker
+      # Enabling this in the network post steps seems to stop docker install working
+      ip link set eth0 promisc on  
+
 hostname: new-server
