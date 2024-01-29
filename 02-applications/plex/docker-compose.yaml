@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
     environment:
       - TZ="Europe/London"
-    network_mode: host
+    network_mode: lan
     volumes:
       - plex-config:/config
       - plex-transcode:/transcode

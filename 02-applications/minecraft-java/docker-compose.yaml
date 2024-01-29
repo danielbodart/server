@@ -11,6 +11,5 @@ services:
     container_name: minecraft_java
     volumes:
       - 'minecraft_java:/data'
-    ports:
-      - '25565:25565'
     restart: unless-stopped
+    network_mode: lan

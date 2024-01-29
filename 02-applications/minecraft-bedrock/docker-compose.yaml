@@ -11,6 +11,5 @@ services:
     container_name: minecraft_bedrock
     volumes:
       - 'minecraft_bedrock:/data'
-    ports:
-      - '19132:19132/udp'
     restart: unless-stopped
+    network_mode: lan
