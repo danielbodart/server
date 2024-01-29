@@ -10,10 +10,3 @@ write_files:
     append: true
 
 hostname: new-server
-
-rancher:
-  network:
-    interfaces:
-      eth0:
-        post_up:
-          - ip link set eth0 promisc on
