@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if ! docker network inspect lan &> /dev/null; then
-  docker network create -d macvlan \
+  docker network create -d ipvlan \
     --subnet=10.0.0.0/24 \
     --gateway=10.0.0.1 \
     --ip-range=10.0.0.32/27 \
