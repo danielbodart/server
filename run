@@ -12,7 +12,7 @@ function setup() {
 }
 
 function run-all() {
-  for run in stacks/*/run
+  for run in **/*/run
   do (
     cd "$(dirname "$run")"
     ./run
