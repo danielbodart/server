@@ -7,6 +7,7 @@ services:
     container_name: portical
     environment:
       - PORTICAL_UPNP_ROOT_URL="http://10.0.0.1:5000/rootDesc.xml"
+    command: ["/opt/portical/run", '-v', "poll"]
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
     restart: unless-stopped
