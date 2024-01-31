@@ -13,3 +13,5 @@ services:
       - 'minecraft_bedrock:/data'
     restart: unless-stopped
     network_mode: lan
+    labels:
+      - 'portical.upnp.forward=19132:19132/udp'

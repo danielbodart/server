@@ -13,3 +13,5 @@ services:
       - 'minecraft_java:/data'
     restart: unless-stopped
     network_mode: lan
+    labels:
+      - 'portical.upnp.forward=25565:25565'
