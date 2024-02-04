@@ -12,6 +12,7 @@ services:
     volumes:
       - 'minecraft_java:/data'
     restart: unless-stopped
-    network_mode: lan
+    ports:
+      - "25565:25565"
     labels:
       - 'portical.upnp.forward=25565:25565'

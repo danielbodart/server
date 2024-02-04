@@ -14,6 +14,5 @@ services:
       - '/var/run/system-engine.sock:/var/run/system-engine.sock'
       - 'portainer:/data'
     ports:
-#      - '8000:8000/tcp'
       - '9443:9443/tcp'
     restart: unless-stopped

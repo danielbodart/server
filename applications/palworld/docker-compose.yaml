@@ -12,6 +12,7 @@ services:
     volumes:
       - 'palworld:/data'
     restart: unless-stopped
-    network_mode: lan
+    ports:
+      - "8211:8211/udp"
     labels:
       - 'portical.upnp.forward=8211:8211/udp'
