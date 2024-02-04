@@ -1,0 +1,17 @@
+version: '3.8'
+
+volumes:
+  palworld:
+    name: palworld
+
+services:
+
+  minecraft_bedrock:
+    image: 'gameservermanagers/gameserver:pw'
+    container_name: palworld
+    volumes:
+      - 'palworld:/data'
+    restart: unless-stopped
+    network_mode: lan
+    labels:
+      - 'portical.upnp.forward=8211:8211/udp'
