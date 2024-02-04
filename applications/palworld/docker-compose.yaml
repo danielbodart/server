@@ -10,7 +10,7 @@ services:
     image: 'gameservermanagers/gameserver:pw'
     container_name: palworld
     volumes:
-      - 'palworld:/data'
+      - '/data/servers/palworld:/data'
     restart: unless-stopped
     ports:
       - "8211:8211/udp"

@@ -15,10 +15,6 @@ write_files:
     owner: root
     content: |
       #!/bin/bash
-      # Mount the data disk
-      #mkdir -p /data
-      #mount /dev/sda1 /data
-
       wait-for-docker
       # Enabling this in the network post steps seems to stop docker install working
       ip link set eth0 promisc on  

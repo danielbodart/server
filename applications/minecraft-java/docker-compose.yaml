@@ -10,7 +10,7 @@ services:
     image: 'gameservermanagers/gameserver:mc'
     container_name: minecraft_java
     volumes:
-      - 'minecraft_java:/data'
+      - '/data/servers/minecraft_java:/data'
     restart: unless-stopped
     ports:
       - "25565:25565"

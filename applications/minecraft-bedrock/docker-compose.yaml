@@ -1,16 +1,12 @@
 version: '3.8'
 
-volumes:
-  minecraft_bedrock:
-    name: minecraft_bedrock
-
 services:
 
   minecraft_bedrock:
     image: 'gameservermanagers/gameserver:mcb'
     container_name: minecraft_bedrock
     volumes:
-      - 'minecraft_bedrock:/data'
+      - '/data/servers/minecraft_bedrock:/data'
     restart: unless-stopped
     ports:
       - "19132:19132/udp"

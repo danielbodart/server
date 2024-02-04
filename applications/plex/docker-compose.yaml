@@ -5,8 +5,6 @@ volumes:
     name: plex-config
   plex-transcode:
     name: plex-transcode
-  plex-data:
-    name: plex-data
 
 services:
   plex:
@@ -19,4 +17,4 @@ services:
     volumes:
       - plex-config:/config
       - plex-transcode:/transcode
-      - plex-data:/data
+      - /data/servers/plex:/data
