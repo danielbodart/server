@@ -1,9 +1,5 @@
 version: '3.8'
 
-volumes:
-  minecraft_java:
-    name: minecraft_java
-
 services:
 
   minecraft_java:

@@ -1,9 +1,5 @@
 version: '3.8'
 
-volumes:
-  palworld:
-    name: palworld
-
 services:
 
   minecraft_bedrock:
