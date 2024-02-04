@@ -15,7 +15,6 @@ write_files:
     owner: root
     content: |
       #!/bin/bash
-      wait-for-docker
 
 hostname: new-server
 
