@@ -2,4 +2,8 @@
 
 docker compose pull
 docker compose up -d
-docker cp data/* minecraft_bedrock:/data/
+
+docker cp data/shared/* minecraft_bedrock:/data/
+
+docker cp data/shared/* wrlin_survival:/data/
+docker cp data/wrlin_survival/* wrlin_survival:/data/

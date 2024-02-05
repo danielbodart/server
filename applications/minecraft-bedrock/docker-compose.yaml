@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  minecraft_bedrock:
+  minecraft_bedrock-:
     image: 'gameservermanagers/gameserver:mcb'
     container_name: minecraft_bedrock
     volumes:
@@ -12,3 +12,15 @@ services:
       - "19132:19132/udp"
     labels:
       - 'portical.upnp.forward=19132:19132/udp'
+
+
+  wrlin_survival:
+    image: 'gameservermanagers/gameserver:mcb'
+    container_name: wrlin_survival
+    volumes:
+      - '/data/servers/wrlin_survival:/data'
+    restart: unless-stopped
+    ports:
+      - "19133:19133/udp"
+    labels:
+      - 'portical.upnp.forward=19133:19133/udp'
