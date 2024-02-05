@@ -3,10 +3,7 @@
 docker compose pull
 docker compose up -d
 
-docker cp data/shared/config-lgsm minecraft_bedrock:/data/
-docker cp data/shared/serverfiles minecraft_bedrock:/data/
+docker cp shared/ minecraft_bedrock:/
 
-
-docker cp data/shared/config-lgsm minecraft_bedrock:/data/
-docker cp data/shared/serverfiles minecraft_bedrock:/data/
-docker cp data/wrlin_survival/serverfiles wrlin_survival:/data/
+docker cp shared/ minecraft_bedrock:/
+docker cp wrlin_survival/ wrlin_survival:/
