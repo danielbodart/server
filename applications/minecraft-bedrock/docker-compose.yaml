@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
 
-  minecraft_bedrock-:
+  minecraft_bedrock:
     image: 'gameservermanagers/gameserver:mcb'
     container_name: minecraft_bedrock
     volumes:
