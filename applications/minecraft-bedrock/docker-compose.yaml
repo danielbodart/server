@@ -11,7 +11,7 @@ services:
     ports:
       - "19132:19132/udp"
     labels:
-      - 'portical.upnp.forward=19132:19132/udp'
+      - 'portical.upnp.forward=published'
 
 
   wrlin_survival:
@@ -23,4 +23,4 @@ services:
     ports:
       - "19133:19132/udp"
     labels:
-      - 'portical.upnp.forward=19133:19133/udp'
+      - 'portical.upnp.forward=published'
