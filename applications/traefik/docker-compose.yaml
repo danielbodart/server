@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"
+      - "--providers.docker.exposedbydefault=false"
+      - "--log.level=DEBUG"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.zerossl.acme.caserver=https://acme.zerossl.com/v2/DV90"
+      - "--certificatesresolvers.zerossl.acme.storage=/data/acme.json"
+      - "--certificatesresolvers.zerossl.acme.httpchallenge=true"
+      - "--certificatesresolvers.zerossl.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.zerossl.acme.email=${ZEROSSL_EMAIL}"
+      - "--certificatesresolvers.zerossl.acme.eab.kid=${ZEROSSL_KID}"
+      - "--certificatesresolvers.zerossl.acme.eab.hmacencoded=${ZEROSSL_HMAC}"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - '/data/servers/traefik:/data'
+    restart: unless-stopped
+    labels:
+      - 'portical.upnp.forward=80:80/tcp,443:443'
+
+  whoami:
+    image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.server.bodar.com`)"
+      - "traefik.http.routers.whoami.tls=true"
+      - "traefik.http.routers.whoami.tls.certresolver=zerossl"
