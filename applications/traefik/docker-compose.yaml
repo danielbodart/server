@@ -19,6 +19,11 @@ services:
       - "--certificatesresolvers.zerossl.acme.email=${ZEROSSL_EMAIL}"
       - "--certificatesresolvers.zerossl.acme.eab.kid=${ZEROSSL_KID}"
       - "--certificatesresolvers.zerossl.acme.eab.hmacencoded=${ZEROSSL_HMAC}"
+      - "--certificatesresolvers.cloudflare.acme.storage=/data/acme.json"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.resolvers[0]=1.1.1.1:53"
+      - "--certificatesresolvers.cloudflare.acme.dnschallenge.resolvers[1]=1.0.0.1:53"
     ports:
       - "80:80"
       - "443:443"
@@ -36,4 +41,4 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`whoami.server.bodar.com`)"
       - "traefik.http.routers.whoami.tls=true"
-      - "traefik.http.routers.whoami.tls.certresolver=zerossl"
+      - "traefik.http.routers.whoami.tls.certresolver=cloudflare"

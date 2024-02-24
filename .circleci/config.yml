@@ -16,6 +16,7 @@ workflows:
       - build:
           context:
             - zerossl
+            - cloudflare
           filters:
             branches:
               only: master
