@@ -10,7 +10,7 @@ services:
       - '/var/run/system-engine.sock:/var/run/system-engine.sock'
       - '/data/servers/portainer:/data'
     ports:
-      - '9443:9443/tcp'
+      - '8000:8000/tcp'
     restart: unless-stopped
     labels:
       - "traefik.enable=true"

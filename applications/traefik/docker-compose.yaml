@@ -11,6 +11,7 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--log.level=DEBUG"
       - "--entrypoints.websecure.address=:443"
+      - "--serversTransport.insecureSkipVerify=true"
       - "--certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt.json"
       - "--certificatesresolvers.letsencrypt.acme.tlsChallenge=true"
     ports:
