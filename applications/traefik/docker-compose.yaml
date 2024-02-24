@@ -33,6 +33,8 @@ services:
       - "traefik.http.routers.whoami.rule=Host(`whoami.server.bodar.com`)"
       - "traefik.http.routers.whoami.tls=true"
       - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
+    networks:
+      - dmz
 
 networks:
   dmz:
