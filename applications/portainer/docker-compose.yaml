@@ -22,6 +22,6 @@ services:
       - dmz
 
 networks:
-  bridge:
+  dmz:
     name: dmz
     external: true

@@ -35,6 +35,6 @@ services:
       - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
 
 networks:
-  bridge:
+  dmz:
     name: dmz
     external: true
