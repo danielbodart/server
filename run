@@ -15,7 +15,6 @@ function run-all() {
   for run in **/*/run
   do (
     cd "$(dirname "$run")"
-    chmod u+x ./run
     ./run
   )
   done
