@@ -15,6 +15,17 @@ write_files:
       PasswordAuthentication no
     append: true
 
+  - container: network
+    path: /etc/dhcpcd.conf
+    content: |
+      hostname
+    append: true
+
+  - container: network
+    path: /etc/hostname
+    content: |
+      new-server
+
 hostname: new-server
 
 mounts:
