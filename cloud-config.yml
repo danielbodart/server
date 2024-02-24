@@ -10,11 +10,10 @@ write_files:
       TZ="Europe/London"
     append: true
 
-  - path: /etc/rc.local
-    permissions: "0755"
-    owner: root
+  - path: /etc/ssh/sshd_config
     content: |
-      #!/bin/bash
+      PasswordAuthentication no
+    append: true
 
 hostname: new-server
 
