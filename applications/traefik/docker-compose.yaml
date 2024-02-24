@@ -10,25 +10,10 @@ services:
       - "--providers.docker"
       - "--providers.docker.exposedbydefault=false"
       - "--log.level=DEBUG"
-      - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.zerossl.acme.caserver=https://acme.zerossl.com/v2/DV90"
-      - "--certificatesresolvers.zerossl.acme.storage=/data/acme.json"
-      - "--certificatesresolvers.zerossl.acme.httpchallenge=true"
-      - "--certificatesresolvers.zerossl.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.zerossl.acme.email=${ZEROSSL_EMAIL}"
-      - "--certificatesresolvers.zerossl.acme.eab.kid=${ZEROSSL_KID}"
-      - "--certificatesresolvers.zerossl.acme.eab.hmacencoded=${ZEROSSL_HMAC}"
-      - "--entrypoints.https.http.tls.certresolver=cloudflare"
-      - "--entrypoints.https.http.tls.domains[0].main=server.bodar.com"
-      - "--entrypoints.https.http.tls.domains[0].sans=*.server.bodar.com"
-      - "--certificatesresolvers.cloudflare.acme.storage=/data/acme.json"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge=true"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge.resolvers[0]=1.1.1.1:53"
-      - "--certificatesresolvers.cloudflare.acme.dnschallenge.resolvers[1]=1.0.0.1:53"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/data/letsencrypt.json"
+      - "--certificatesresolvers.letsencrypt.acme.tlsChallenge=true"
     ports:
-      - "80:80"
       - "443:443"
       - "8080:8080"
     volumes:
@@ -36,7 +21,7 @@ services:
       - '/data/servers/traefik:/data'
     restart: unless-stopped
     labels:
-      - 'portical.upnp.forward=80:80/tcp,443:443'
+      - 'portical.upnp.forward=443:443'
 
   whoami:
     image: traefik/whoami
@@ -44,4 +29,4 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`whoami.server.bodar.com`)"
       - "traefik.http.routers.whoami.tls=true"
-      - "traefik.http.routers.whoami.tls.certresolver=cloudflare"
+      - "traefik.http.routers.whoami.tls.certresolver=letsencrypt"
