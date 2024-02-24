@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if ! docker network inspect dmz &> /dev/null; then
+  docker network create -d bridge dmz
+fi
