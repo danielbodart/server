@@ -10,10 +10,10 @@ write_files:
       TZ="Europe/London"
     append: true
 
-  - path: /etc/ssh/sshd_config
-    content: |
-      PasswordAuthentication no
-    append: true
+#  - path: /etc/ssh/sshd_config
+#    content: |
+#      PasswordAuthentication no
+#    append: true
 
   - container: network
     path: /etc/dhcpcd.conf
