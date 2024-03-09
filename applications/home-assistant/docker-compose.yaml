@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  homeassistant:
+    image: lscr.io/linuxserver/homeassistant:latest
+    container_name: homeassistant
+    network_mode: host
+    environment:
+      - PUID=1100
+      - PGID=1100
+      - TZ="Europe/London"
+    volumes:
+      -  '/data/servers/home-assistant:/config'
+    ports:
+      - 8123:8123
+    restart: unless-stopped
