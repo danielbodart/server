@@ -3,6 +3,7 @@ ssh_authorized_keys:
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCwr2ouBRNc5Uv9qa4bJw/TwK2I9Z8+v2HCc7QifBEVsmQPpA8wBj3PSmNA+cq50i6uh4636EJZxOrBuN6wI2c6/fKWwJCOPBszdF4MQ8/2ohKV4vCIJE1P/ZWGvcgWOqqQGL++MYlPn5zllruahAtNRf4pSS35w/TVnjPc0w1OAL+VEAlE0UYN+zDkd0QPrjdZTKkni8uWiNHR5wZ0gn1v8RTixX7VUEn1dAJZcV4P/2crMB3K5WOBWbxDCJHP9vUhpmR3S8DKQ8uOw8+ecLhZTIBs6ITvPeby2tdJYJcOtKEEofBOd6YXApOlmg2vAtJd4/3ijdi5rs5zYjAE0fJsWY/fC2LwxEXIQjA5utuifod4qeNuwhDcJ4aTxg0zKHioSw9ZUH6z50cpKrTc4/ynBCl5UmQFoXu6JY/aZMi6XfkqUMk4/NXU6a+l5MJLnZHWwrwOBwc4crx3FJczD9Jtbta8eiAbXubgum8S9zml1wqisnVxSaOvX3OBKLYbMCc= dan@desktop
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINAYkl3aznbznijM+wy3VrTgStEQpgPaub8ipdLpXcfs server@bodar.com
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINNC4mpMfVaj2UH/LM3r+m5nCGh+XsWEcyzM850pW0TT dan@dan-laptop
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMAm8j+2t6qC7zevPOhqgF1F+dsF2QeHOmjWJp5d6WoG dan@dan-desktop
 
 write_files:
   - path: /etc/environment
