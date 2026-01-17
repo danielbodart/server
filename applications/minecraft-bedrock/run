@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-docker compose pull
-docker compose up -d
+#docker compose pull
+#docker compose up -d
 
-docker cp shared/ minecraft_bedrock:/
+#docker cp shared/ minecraft_bedrock:/
 
-docker cp shared/ minecraft_bedrock:/
-docker cp wrlin_survival/ wrlin_survival:/
+#docker cp shared/ minecraft_bedrock:/
+#docker cp wrlin_survival/ wrlin_survival:/
