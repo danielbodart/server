@@ -1,7 +1,7 @@
 #cloud-config
 ssh_authorized_keys:
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINAYkl3aznbznijM+wy3VrTgStEQpgPaub8ipdLpXcfs server@bodar.com
-  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINNC4mpMfVaj2UH/LM3r+m5nCGh+XsWEcyzM850pW0TT dan@dan-laptop
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILL50PYMCNm5O8NYO31DO7qlBj9L7+M+VUINyxz/S89C dan@dan-blade
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGbziDklsaJvpmlHKYKkfpnu2Zbpf/a46ctzLoT89WCN dan@dan-desktop
 
 write_files:

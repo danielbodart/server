@@ -17,6 +17,6 @@ services:
       - "5520:5520/udp"
     volumes:
       - '/data/servers/hytale:/home/container'
-      - '/etc/machine-id:/etc/machine-id:ro'
+      - '/data/servers/hytale/machine-id:/etc/machine-id:ro'
     tty: true
     stdin_open: true
