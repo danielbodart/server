@@ -15,7 +15,7 @@ function create() {
   mkdir -p /tmp/burmilla
   pushd /tmp/burmilla
   if [ ! -f "burmillaos.iso" ]; then
-    curl "https://github.com/burmilla/os/releases/download/v2.0.0-rc2/burmillaos-v2.0.0-rc2.iso" -L -o burmillaos.iso
+    curl "https://github.com/burmilla/os/releases/download/v2.0.5/burmillaos-v2.0.5.iso" -L -o burmillaos.iso
   fi
 
   if [[ ! $(command -v xorriso) ]]; then
