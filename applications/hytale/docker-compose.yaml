@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  hytale:
+  hytale-eldermarch:
     image: deinfreu/hytale-server:experimental
-    container_name: hytale-server
+    container_name: hytale-eldermarch
     environment:
       SERVER_IP: "0.0.0.0"
       SERVER_PORT: "5520"
@@ -16,7 +16,49 @@ services:
     ports:
       - "5520:5520/udp"
     volumes:
-      - '/data/servers/hytale:/home/container'
-      - '/data/servers/hytale/machine-id:/etc/machine-id:ro'
+      - '/data/servers/hytale-eldermarch:/home/container'
+      - '/data/servers/hytale-eldermarch/machine-id:/etc/machine-id:ro'
+    tty: true
+    stdin_open: true
+
+
+  hytale-worthengard:
+    image: deinfreu/hytale-server:experimental
+    container_name: hytale-worthengard
+    environment:
+      SERVER_IP: "0.0.0.0"
+      SERVER_PORT: "5521"
+      PROD: "FALSE"
+      DEBUG: "FALSE"
+      TZ: "Europe/London"
+    restart: unless-stopped
+    labels:
+      - 'portical.upnp.forward=published'
+    ports:
+      - "5521:5521/udp"
+    volumes:
+      - '/data/servers/hytale-worthengard:/home/container'
+      - '/data/servers/hytale-worthengard/machine-id:/etc/machine-id:ro'
+    tty: true
+    stdin_open: true
+
+
+  hytale-savage-sanctum:
+    image: deinfreu/hytale-server:experimental
+    container_name: hytale-savage-sanctum
+    environment:
+      SERVER_IP: "0.0.0.0"
+      SERVER_PORT: "5522"
+      PROD: "FALSE"
+      DEBUG: "FALSE"
+      TZ: "Europe/London"
+    restart: unless-stopped
+    labels:
+      - 'portical.upnp.forward=published'
+    ports:
+      - "5522:5522/udp"
+    volumes:
+      - '/data/servers/hytale-savage-sanctum:/home/container'
+      - '/data/servers/hytale-savage-sanctum/machine-id:/etc/machine-id:ro'
     tty: true
     stdin_open: true
