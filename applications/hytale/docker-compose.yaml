@@ -62,3 +62,25 @@ services:
       - '/data/servers/hytale-savage-sanctum/machine-id:/etc/machine-id:ro'
     tty: true
     stdin_open: true
+
+
+
+  hytale-rltale:
+      image: deinfreu/hytale-server:experimental
+      container_name: hytale-rltale
+      environment:
+        SERVER_IP: "0.0.0.0"
+        SERVER_PORT: "5523"
+        PROD: "FALSE"
+        DEBUG: "FALSE"
+        TZ: "Europe/London"
+      restart: unless-stopped
+      labels:
+        - 'portical.upnp.forward=published'
+      ports:
+        - "5523:5523/udp"
+      volumes:
+        - '/data/servers/hytale-rltale:/home/container'
+        - '/data/servers/hytale-rltale/machine-id:/etc/machine-id:ro'
+      tty: true
+      stdin_open: true
