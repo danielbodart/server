@@ -1,5 +1,6 @@
 #!ipxe
 
+dhcp
 echo Booting Flatcar Container Linux (diskless)...
 echo All files served from local gateway
 
