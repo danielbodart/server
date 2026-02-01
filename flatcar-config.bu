@@ -1,0 +1,64 @@
+variant: flatcar
+version: 1.0.0
+
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINAYkl3aznbznijM+wy3VrTgStEQpgPaub8ipdLpXcfs server@bodar.com
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILL50PYMCNm5O8NYO31DO7qlBj9L7+M+VUINyxz/S89C dan@dan-blade
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGbziDklsaJvpmlHKYKkfpnu2Zbpf/a46ctzLoT89WCN dan@dan-desktop
+        - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBy0k+z7p96M/bmRz+Py2jEtQpGAToEEZqnRbCgyoIdo github-actions@server
+
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: server
+    # Add /data/bin to PATH for docker-compose
+    - path: /etc/profile.d/data-bin.sh
+      mode: 0644
+      contents:
+        inline: |
+          export PATH="/data/bin:$PATH"
+
+systemd:
+  units:
+    # Mount existing data drive
+    - name: data.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount data drive
+        Before=local-fs.target
+
+        [Mount]
+        What=/dev/sda1
+        Where=/data
+        Type=ext4
+        Options=defaults
+
+        [Install]
+        WantedBy=local-fs.target
+
+    # Install docker-compose to /data/bin (persistent across reboots)
+    - name: install-docker-compose.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Install docker-compose
+        After=network-online.target data.mount
+        Wants=network-online.target
+        Requires=data.mount
+        ConditionPathExists=!/data/bin/docker-compose
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/usr/bin/mkdir -p /data/bin
+        ExecStart=/usr/bin/curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o /data/bin/docker-compose
+        ExecStart=/usr/bin/chmod +x /data/bin/docker-compose
+
+        [Install]
+        WantedBy=multi-user.target

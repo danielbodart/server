@@ -1,0 +1,15 @@
+#!ipxe
+
+echo Booting Flatcar Container Linux (diskless)...
+echo All files served from local gateway
+
+# Get gateway IP dynamically
+set gateway-ip ${next-server}
+
+# Everything from local cache (served by uhttpd)
+set base-url http://${gateway-ip}/flatcar
+
+kernel ${base-url}/vmlinuz initrd=initrd.cpio.gz flatcar.first_boot=1 ignition.config.url=${base-url}/config.ign
+initrd ${base-url}/initrd.cpio.gz
+
+boot

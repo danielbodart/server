@@ -4,7 +4,7 @@ function setup() {
   local name="server-bodar-com"
 
   if ! docker context inspect "${name}" &> /dev/null; then
-    docker context create "${name}" --docker "host=ssh://rancher@server.bodar.com:222"
+    docker context create "${name}" --docker "host=ssh://core@server.bodar.com:222"
     docker context use "${name}"
   fi
 

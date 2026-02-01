@@ -1,0 +1,43 @@
+#!/bin/sh
+# Updates Flatcar PXE images from CDN and config.ign from GitHub Pages
+# Downloads to .new files, then atomically replaces current ones
+# Run via cron: 0 3 * * 0 /usr/local/bin/update-flatcar-images
+
+set -e
+CACHE_DIR="/www/flatcar"
+FLATCAR_URL="https://stable.release.flatcar-linux.net/amd64-usr/current"
+CONFIG_URL="https://danielbodart.github.io/server/config.ign"
+
+cd "$CACHE_DIR"
+
+echo "$(date): Updating Flatcar boot files..."
+
+# Download kernel
+if wget -q -O vmlinuz.new "$FLATCAR_URL/flatcar_production_pxe.vmlinuz"; then
+    mv vmlinuz.new vmlinuz
+    echo "Kernel updated"
+else
+    rm -f vmlinuz.new
+    echo "Kernel download failed"
+fi
+
+# Download initrd
+if wget -q -O initrd.cpio.gz.new "$FLATCAR_URL/flatcar_production_pxe_image.cpio.gz"; then
+    mv initrd.cpio.gz.new initrd.cpio.gz
+    echo "Initrd updated"
+else
+    rm -f initrd.cpio.gz.new
+    echo "Initrd download failed"
+fi
+
+# Download config.ign from GitHub Pages
+if wget -q -O config.ign.new "$CONFIG_URL"; then
+    mv config.ign.new config.ign
+    echo "Config updated from GitHub Pages"
+else
+    rm -f config.ign.new
+    echo "Config download failed (will use existing)"
+fi
+
+echo "$(date): Update complete"
+ls -lh "$CACHE_DIR"
