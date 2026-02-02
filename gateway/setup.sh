@@ -8,7 +8,7 @@ GATEWAY="${GATEWAY:-gateway}"
 echo "Setting up PXE boot on OpenWRT gateway..."
 
 # Create directories on gateway
-ssh "$GATEWAY" "mkdir -p /srv/tftp /www/flatcar /usr/local/bin"
+ssh "$GATEWAY" "mkdir -p /srv/tftp"
 
 # Download iPXE bootloaders (if not present)
 ssh "$GATEWAY" /bin/sh << 'REMOTE_SCRIPT'
@@ -18,14 +18,11 @@ cd /srv/tftp
 echo "iPXE bootloaders ready"
 REMOTE_SCRIPT
 
-# Deploy config files from this repo
-echo "Deploying config files..."
+# Deploy iPXE boot script
+echo "Deploying iPXE boot script..."
 scp "$SCRIPT_DIR/flatcar.ipxe" "$GATEWAY:/srv/tftp/flatcar.ipxe"
-scp "$SCRIPT_DIR/update-flatcar-images" "$GATEWAY:/usr/local/bin/update-flatcar-images"
-ssh "$GATEWAY" "chmod +x /usr/local/bin/update-flatcar-images"
 
 # Configure dnsmasq PXE boot via /etc/dnsmasq.conf (persistent across reboots)
-# OpenWRT includes this file via conf-file directive
 echo "Configuring PXE boot in dnsmasq..."
 ssh "$GATEWAY" /bin/sh << 'REMOTE_SCRIPT'
 # Check if PXE config already exists
@@ -69,28 +66,11 @@ uci commit dhcp
 echo "dnsmasq configured and restarted"
 REMOTE_SCRIPT
 
-# Add weekly cron job (if not present)
-ssh "$GATEWAY" /bin/sh << 'REMOTE_SCRIPT'
-CRON_LINE="0 3 * * 0 /usr/local/bin/update-flatcar-images >> /var/log/flatcar-update.log 2>&1"
-if ! grep -q "update-flatcar-images" /etc/crontabs/root 2>/dev/null; then
-    echo "$CRON_LINE" >> /etc/crontabs/root
-    /etc/init.d/cron restart
-    echo "Weekly cron job added (Sunday 3am)"
-else
-    echo "Cron job already exists"
-fi
-REMOTE_SCRIPT
-
-# Run initial download of Flatcar images
-echo ""
-echo "Downloading Flatcar images (~420MB, this may take a while)..."
-ssh "$GATEWAY" "/usr/local/bin/update-flatcar-images"
-
 echo ""
 echo "PXE setup complete!"
 echo ""
 echo "Files on gateway:"
-ssh "$GATEWAY" "ls -lh /srv/tftp/ /www/flatcar/"
+ssh "$GATEWAY" "ls -lh /srv/tftp/"
 echo ""
-echo "To manually update: ssh gateway /usr/local/bin/update-flatcar-images"
-echo "To redeploy configs: ./gateway/setup.sh"
+echo "iPXE will boot directly from Flatcar CDN and GitHub Pages."
+echo "To redeploy: ./gateway/setup.sh"
