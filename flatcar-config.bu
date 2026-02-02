@@ -22,6 +22,19 @@ storage:
       contents:
         inline: |
           export PATH="/data/bin:$PATH"
+    # Zincati auto-update reboot window (Sundays 3-4am UK time)
+    - path: /etc/zincati/config.d/55-update-window.toml
+      mode: 0644
+      contents:
+        inline: |
+          [updates]
+          strategy = "periodic"
+          [updates.periodic]
+          time_zone = "Europe/London"
+          [[updates.periodic.window]]
+          days = ["Sun"]
+          start_time = "03:00"
+          length_minutes = 60
 
 systemd:
   units:
