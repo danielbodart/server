@@ -10,16 +10,14 @@ echo "Setting up PXE boot on OpenWRT gateway..."
 # Create directories on gateway
 ssh "$GATEWAY" "mkdir -p /srv/tftp"
 
-# Download iPXE bootloaders (if not present)
-ssh "$GATEWAY" /bin/sh << 'REMOTE_SCRIPT'
-cd /srv/tftp
-[ -f ipxe.efi ] || wget -q http://boot.salstar.sk/ipxe/ipxe.efi
-[ -f undionly.kpxe ] || wget -q http://boot.salstar.sk/ipxe/undionly.kpxe
-echo "iPXE bootloaders ready"
-REMOTE_SCRIPT
+# Build and deploy iPXE bootloaders (never use pre-built images - they phone home)
+IPXE_SRC="$SCRIPT_DIR/../ipxe/src"
+echo "Building iPXE bootloaders..."
+make -C "$IPXE_SRC" -j"$(nproc)" bin-x86_64-efi/ipxe.efi bin/undionly.kpxe
 
-# Deploy iPXE boot script
-echo "Deploying iPXE boot script..."
+echo "Deploying iPXE bootloaders and boot script..."
+scp "$IPXE_SRC/bin-x86_64-efi/ipxe.efi" "$GATEWAY:/srv/tftp/ipxe.efi"
+scp "$IPXE_SRC/bin/undionly.kpxe" "$GATEWAY:/srv/tftp/undionly.kpxe"
 scp "$SCRIPT_DIR/flatcar.ipxe" "$GATEWAY:/srv/tftp/flatcar.ipxe"
 
 # Configure dnsmasq PXE boot via /etc/dnsmasq.conf (persistent across reboots)
@@ -68,5 +66,5 @@ echo ""
 echo "Files on gateway:"
 ssh "$GATEWAY" "ls -lh /srv/tftp/"
 echo ""
-echo "iPXE will boot directly from Flatcar CDN and GitHub Pages."
+echo "PXE boot menu available to any machine on the network."
 echo "To redeploy: ./gateway/setup.sh"
