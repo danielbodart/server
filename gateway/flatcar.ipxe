@@ -1,12 +1,31 @@
 #!ipxe
 
 dhcp
-echo Booting Flatcar Container Linux...
 
+menu Network Boot
+item flatcar     Flatcar Linux (install to disk)
+item nixos       NixOS Minimal
+item netbootxyz  netboot.xyz (more distros)
+item shell       iPXE Shell
+choose target && goto ${target}
+
+:flatcar
+echo Booting Flatcar Linux...
 set flatcar-url https://stable.release.flatcar-linux.net/amd64-usr/current
 set ignition-url https://danielbodart.github.io/server/config.ign
-
 kernel ${flatcar-url}/flatcar_production_pxe.vmlinuz initrd=initrd.cpio.gz flatcar.first_boot=1 ignition.config.url=${ignition-url}
 initrd ${flatcar-url}/flatcar_production_pxe_image.cpio.gz
-
 boot
+
+:nixos
+echo Booting NixOS Minimal...
+chain --autofree https://github.com/nix-community/nixos-images/releases/latest/download/netboot-x86_64-linux.ipxe
+
+:netbootxyz
+echo Loading netboot.xyz...
+chain --autofree https://boot.netboot.xyz
+
+:shell
+echo Type 'exit' to return to menu
+shell
+goto start
