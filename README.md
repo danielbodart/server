@@ -1,6 +1,6 @@
 # Server
 
-Flatcar Linux server with automatic updates, bootstrapped via PXE from local OpenWRT gateway.
+Flatcar Linux server with automatic updates, plus network boot menu for OS installers.
 
 ## Architecture
 
@@ -16,15 +16,26 @@ Flatcar Linux server with automatic updates, bootstrapped via PXE from local Ope
 │  config.ign     │         │ TFTP: ipxe.efi, flatcar.ipxe│
 └────────┬────────┘         └──────────────┬──────────────┘
          │                                 │
-         │                                 │ one-time PXE boot
+         │                                 │ PXE boot (any machine)
          v                                 v
 ┌─────────────────────────────────────────────────────────┐
-│                         Server                          │
-│  Flatcar Linux installed on NVMe (auto-updates via     │
-│  Zincati, reboots Sundays 3-4am UK time)               │
-│  /data on separate drive (persistent storage)          │
+│                    Network Boot Menu                    │
+│  - Flatcar Linux (install to disk)                     │
+│  - NixOS Minimal                                        │
+│  - netboot.xyz (Ubuntu, Debian, Arch, Fedora, etc.)   │
 └─────────────────────────────────────────────────────────┘
 ```
+
+## Network Boot Menu
+
+Any machine on the network can PXE boot and get a menu with:
+
+| Option | Description |
+|--------|-------------|
+| Flatcar Linux | Boot live Flatcar, then install to disk |
+| NixOS Minimal | NixOS with CLI installer |
+| netboot.xyz | Menu with many other distros (Ubuntu, Debian, Arch, Fedora, etc.) |
+| iPXE Shell | For debugging |
 
 ## How It Works
 
@@ -36,7 +47,7 @@ Flatcar Linux server with automatic updates, bootstrapped via PXE from local Ope
 ## Initial Server Setup
 
 1. Configure server BIOS for one-time network boot
-2. Server PXE boots, fetches Flatcar from CDN
+2. Server PXE boots, select "Flatcar Linux" from menu
 3. From the live system, install to disk:
    ```bash
    flatcar-install -d /dev/nvme0n1 -C stable -i https://danielbodart.github.io/server/config.ign
@@ -50,7 +61,7 @@ Flatcar Linux server with automatic updates, bootstrapped via PXE from local Ope
 | `flatcar-config.bu` | Butane config (human-readable Ignition) |
 | `.github/workflows/deploy.yml` | Builds config.ign, deploys to Pages, deploys containers |
 | `gateway/setup.sh` | One-time gateway setup script |
-| `gateway/flatcar.ipxe` | iPXE boot script (fetches from CDN + GitHub Pages) |
+| `gateway/flatcar.ipxe` | iPXE boot menu script |
 | `run` | Local script to deploy containers |
 
 ## Gateway Files
@@ -59,7 +70,7 @@ Flatcar Linux server with automatic updates, bootstrapped via PXE from local Ope
 /srv/tftp/
 ├── ipxe.efi              # UEFI bootloader
 ├── undionly.kpxe         # BIOS bootloader
-└── flatcar.ipxe          # Boot script (points to CDN + GitHub Pages)
+└── flatcar.ipxe          # Boot menu (Flatcar, NixOS, netboot.xyz)
 ```
 
 ## Server Layout
@@ -101,14 +112,6 @@ ssh new-server "journalctl -u zincati -f"
 3. GitHub Actions builds and deploys to Pages
 4. For new installs, config is fetched automatically
 5. For existing installs, re-run Ignition or reinstall
-
-## Adding Another Server
-
-Add MAC address to gateway's `/etc/dnsmasq.conf`:
-```
-dhcp-host=<MAC>,set:flatcar-server
-```
-Then restart dnsmasq: `/etc/init.d/dnsmasq restart`
 
 ## Secrets
 

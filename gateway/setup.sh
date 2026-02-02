@@ -31,27 +31,23 @@ if grep -q "PXE boot configuration" /etc/dnsmasq.conf 2>/dev/null; then
 else
     cat >> /etc/dnsmasq.conf << 'EOF'
 
-# PXE boot configuration for Flatcar Linux
-# Restricted to new-server by MAC address
-
-# Tag new-server by MAC address (only this machine will PXE boot Flatcar)
-dhcp-host=70:85:c2:a2:e5:75,set:flatcar-server
+# PXE boot configuration (any machine can network boot)
 
 # Detect iPXE clients
 dhcp-match=set:ipxe,175
 
-# UEFI 64-bit - serve ipxe.efi first (only to flatcar-server)
+# UEFI 64-bit - serve ipxe.efi first, then boot script once iPXE loads
 dhcp-match=set:efi64,option:client-arch,7
-dhcp-boot=tag:flatcar-server,tag:efi64,tag:!ipxe,ipxe.efi
+dhcp-boot=tag:efi64,tag:!ipxe,ipxe.efi
 dhcp-match=set:efi64-alt,option:client-arch,9
-dhcp-boot=tag:flatcar-server,tag:efi64-alt,tag:!ipxe,ipxe.efi
+dhcp-boot=tag:efi64-alt,tag:!ipxe,ipxe.efi
 
-# iPXE clients with flatcar-server tag get the Flatcar boot script
-dhcp-boot=tag:flatcar-server,tag:ipxe,flatcar.ipxe
+# iPXE clients get the boot menu
+dhcp-boot=tag:ipxe,flatcar.ipxe
 
-# BIOS fallback (only to flatcar-server)
+# BIOS fallback
 dhcp-match=set:bios,option:client-arch,0
-dhcp-boot=tag:flatcar-server,tag:bios,tag:!ipxe,undionly.kpxe
+dhcp-boot=tag:bios,tag:!ipxe,undionly.kpxe
 EOF
     echo "PXE config added to /etc/dnsmasq.conf"
 fi
