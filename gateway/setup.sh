@@ -12,8 +12,16 @@ ssh "$GATEWAY" "mkdir -p /srv/tftp"
 
 # Build and deploy iPXE bootloaders (never use pre-built images - they phone home)
 IPXE_SRC="$SCRIPT_DIR/../ipxe/src"
-echo "Building iPXE bootloaders..."
-make -C "$IPXE_SRC" -j"$(nproc)" bin-x86_64-efi/ipxe.efi bin/undionly.kpxe
+CA_BUNDLE="$IPXE_SRC/ca-bundle.crt"
+
+# Download Mozilla CA bundle if not present (for HTTPS certificate validation)
+if [[ ! -f "$CA_BUNDLE" ]]; then
+    echo "Downloading Mozilla CA bundle..."
+    curl -sL https://curl.se/ca/cacert.pem -o "$CA_BUNDLE"
+fi
+
+echo "Building iPXE bootloaders with embedded CA certificates..."
+make -C "$IPXE_SRC" -j"$(nproc)" bin-x86_64-efi/ipxe.efi bin/undionly.kpxe TRUST="$CA_BUNDLE"
 
 echo "Deploying iPXE bootloaders and boot script..."
 scp "$IPXE_SRC/bin-x86_64-efi/ipxe.efi" "$GATEWAY:/srv/tftp/ipxe.efi"
