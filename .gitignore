@@ -1,3 +1,4 @@
 .idea
 ipxe/src/ca-bundle.crt
+ipxe/src/certs/
 

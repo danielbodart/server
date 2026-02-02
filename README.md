@@ -62,7 +62,24 @@ Any machine on the network can PXE boot and get a menu with:
 | `.github/workflows/deploy.yml` | Builds config.ign, deploys to Pages, deploys containers |
 | `gateway/setup.sh` | One-time gateway setup script |
 | `gateway/flatcar.ipxe` | iPXE boot menu script |
+| `build-ipxe` | Builds iPXE with HTTPS certificate support |
+| `ipxe/` | iPXE source (git submodule) |
 | `run` | Local script to deploy containers |
+
+## iPXE Build
+
+iPXE is built locally (never use pre-built images - they phone home). The build script embeds root CA certificates for HTTPS validation:
+
+```bash
+./build-ipxe
+```
+
+This embeds fingerprints for:
+- **ISRG Root X1** - Let's Encrypt (Flatcar CDN)
+- **USERTrust RSA** - Sectigo (GitHub Pages)
+- **Amazon Root CA 1** - netboot.xyz
+
+Without embedded certs, iPXE fails with error `0x0216eb` on HTTPS connections.
 
 ## Gateway Files
 

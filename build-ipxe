@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Build iPXE with embedded root CA certificates for HTTPS validation
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+IPXE_SRC="$SCRIPT_DIR/ipxe/src"
+CERTS_DIR="$IPXE_SRC/certs"
+CA_BUNDLE="$IPXE_SRC/ca-bundle.crt"
+
+echo "Building iPXE with HTTPS certificate validation..."
+
+# Download Mozilla CA bundle if not present
+if [[ ! -f "$CA_BUNDLE" ]]; then
+    echo "Downloading Mozilla CA bundle..."
+    curl -sL https://curl.se/ca/cacert.pem -o "$CA_BUNDLE"
+fi
+
+# Extract specific root CAs we need (iPXE only reads first cert from bundle files)
+mkdir -p "$CERTS_DIR"
+
+echo "Extracting root CA certificates..."
+
+# ISRG Root X1 - Let's Encrypt (used by Flatcar CDN)
+awk '/ISRG Root X1/,/END CERTIFICATE/' "$CA_BUNDLE" > "$CERTS_DIR/isrg-root-x1.pem"
+
+# USERTrust RSA - Sectigo (used by GitHub Pages and GitHub)
+awk '/USERTrust RSA Certification Authority/,/END CERTIFICATE/' "$CA_BUNDLE" > "$CERTS_DIR/usertrust-rsa.pem"
+
+# Amazon Root CA 1 (used by netboot.xyz)
+awk '/Amazon Root CA 1$/,/END CERTIFICATE/' "$CA_BUNDLE" > "$CERTS_DIR/amazon-root-ca-1.pem"
+
+# Verify extracted certs
+for cert in "$CERTS_DIR"/*.pem; do
+    if ! openssl x509 -in "$cert" -noout -subject >/dev/null 2>&1; then
+        echo "ERROR: Invalid certificate: $cert"
+        exit 1
+    fi
+done
+
+TRUST_CERTS="$CERTS_DIR/isrg-root-x1.pem,$CERTS_DIR/usertrust-rsa.pem,$CERTS_DIR/amazon-root-ca-1.pem"
+
+echo "Building iPXE binaries..."
+make -C "$IPXE_SRC" -j"$(nproc)" \
+    bin-x86_64-efi/ipxe.efi \
+    bin/undionly.kpxe \
+    TRUST="$TRUST_CERTS"
+
+echo ""
+echo "Build complete:"
+ls -lh "$IPXE_SRC/bin-x86_64-efi/ipxe.efi" "$IPXE_SRC/bin/undionly.kpxe"
+echo ""
+echo "Embedded root CAs:"
+echo "  - ISRG Root X1 (Let's Encrypt)"
+echo "  - USERTrust RSA (Sectigo/GitHub)"
+echo "  - Amazon Root CA 1 (netboot.xyz)"
